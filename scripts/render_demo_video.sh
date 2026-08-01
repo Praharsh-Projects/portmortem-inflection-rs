@@ -233,7 +233,7 @@ make_title_slide() {
   local output_path="${slides_dir}/01.png"
   magick "${hero_path}" -resize '1920x1080^' -gravity center -extent 1920x1080 \
     \( -size 1920x1080 xc:'#030812b8' \) -compose over -composite \
-    "${logo_path}" -resize 170x170 -gravity northwest -geometry +130+150 -composite \
+    \( "${logo_path}" -resize 170x170 \) -gravity northwest -geometry +130+150 -composite \
     -fill '#5ee0a0' -font "${font_sans}" -pointsize 32 -annotate +130+104 'PORT MORTEM 2026  /  TRACK D' \
     -fill '#ffffff' -font "${font_sans}" -pointsize 94 -annotate +350+225 'inflection-rs' \
     -fill '#d9e5f2' -font "${font_sans}" -pointsize 44 -annotate +350+290 'Verified Python-to-Rust behavioral port' \
@@ -259,10 +259,11 @@ for number in 01 02 03 04 05 06 07 08; do
   ffmpeg -hide_banner -loglevel error -y \
     -loop 1 -framerate 30 -i "${slides_dir}/${number}.png" \
     -i "${work_dir}/audio/${number}.aiff" \
-    -filter_complex '[1:a]apad=pad_dur=1.25[a]' \
+    -vf 'scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,format=yuv420p' \
+    -filter_complex '[1:a]loudnorm=I=-16:LRA=7:TP=-1.5,aresample=48000,apad=pad_dur=1.25[a]' \
     -map 0:v -map '[a]' \
     -c:v libx264 -preset medium -tune stillimage -crf 18 -pix_fmt yuv420p -r 30 \
-    -c:a aac -b:a 160k -shortest \
+    -c:a aac -b:a 192k -ar 48000 -ac 2 -shortest \
     "${work_dir}/clips/${number}.mp4"
   printf "file '%s'\n" "${work_dir}/clips/${number}.mp4" >>"${concat_path}"
 done
