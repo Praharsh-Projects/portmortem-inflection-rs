@@ -150,8 +150,8 @@ rust_p99="$(jq -r '.rust.batch.p99_ms' "${evidence_dir}/benchmark.json")"
 case_count="$(jq -r '.workload.cases_per_batch' "${evidence_dir}/benchmark.json")"
 
 cat >"${work_dir}/text/07-body.txt" <<EOF
-OUTPUT GATE
-  Both implementations matched for ${case_count} cases before timing
+CORRECTNESS GATE
+  Outputs matched for ${case_count} cases before timing
 
 MEDIAN BATCH TIME
   Python   ${python_median} ms
@@ -162,28 +162,24 @@ P99 BATCH TIME
   Python   ${python_p99} ms
   Rust     ${rust_p99} ms
 
-Single arm64 macOS workload; not a universal speed claim.
-Raw samples, RSS, startup measurements, hashes, and limitations are retained.
+SCOPE
+  Single arm64 macOS workload; not a universal speed claim
+  Raw samples, RSS, startup, hashes, and limitations retained
 EOF
 
 cat >"${work_dir}/text/08-body.txt" <<EOF
 REPRODUCIBLE AND REVIEWABLE
+Public: github.com/Praharsh-Projects/portmortem-inflection-rs
+Revision: ${head_sha}
+CI gate: make verify
 
-  Public source:
-  github.com/Praharsh-Projects/portmortem-inflection-rs
+30 native Rust tests
+455 untouched tests against Python source
+455 untouched tests through the live-Rust bridge
+2,005,000 retained differential cases / zero divergences
 
-  Final revision:
-  ${head_sha}
-
-  CI command: make verify
-
-  30 native Rust tests
-  455 untouched tests against Python source
-  455 untouched tests through the live-Rust bridge
-  2,005,000 retained differential cases / zero divergences
-
-DECISIONS.md records compatibility boundaries and evidence limits.
-Demo branding uses the disclosed generated assets; narration uses macOS TTS.
+Decision log: DECISIONS.md
+Media: disclosed generated branding + macOS system TTS narration
 EOF
 
 cat >"${work_dir}/text/01-narration.txt" <<EOF
