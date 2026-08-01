@@ -152,19 +152,15 @@ case_count="$(jq -r '.workload.cases_per_batch' "${evidence_dir}/benchmark.json"
 cat >"${work_dir}/text/07-body.txt" <<EOF
 CORRECTNESS GATE
   Outputs matched for ${case_count} cases before timing
-
 MEDIAN BATCH TIME
   Python   ${python_median} ms
   Rust     ${rust_median} ms
   Observed ratio: ${ratio}x
-
 P99 BATCH TIME
   Python   ${python_p99} ms
   Rust     ${rust_p99} ms
-
-SCOPE
-  Single arm64 macOS workload; not a universal speed claim
-  Raw samples, RSS, startup, hashes, and limitations retained
+SCOPE: single arm64 macOS workload; not a universal speed claim
+EVIDENCE: raw samples, RSS, startup, hashes, and limitations retained
 EOF
 
 cat >"${work_dir}/text/08-body.txt" <<EOF
