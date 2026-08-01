@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Rust, parity, and differential verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install pinned Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.91.1
+          components: clippy,rustfmt
+
+      - name: Cache Rust build outputs
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install parity-test dependency
+        run: python -m pip install --disable-pip-version-check "pytest==9.1.1"
+
+      - name: Verify tests, live upstream parity, Unicode sweep, and differential fuzzing
+        run: make verify
+
+      - name: Retain differential fuzz log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: differential-fuzz-log
+          path: fuzz/log.txt
+          if-no-files-found: warn

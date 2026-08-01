@@ -1,0 +1,13 @@
+Port Mortem differential fuzz session
+status: PASS
+generated_at_utc: 2026-08-01T21:08:41.994595+00:00
+upstream: https://github.com/jpvanhal/inflection@88eefaacf7d0caaa701af7c8ab2d0ab3f17086f1
+python: 3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]
+python_ucd: 16.0.0
+rustc: rustc 1.91.1 (ed61e7d7e 2025-11-07)
+binary_sha256: d58e452a3c9aefaf4a569f410bc71c321c5a763c4d45791c72b0a5824475fcbb
+source_inputs_sha256: 311372a969abe04e0a252e53b63125455f1a459dde31ba1411b1ffa18590e5bd
+seed: 20260801
+duration_seconds: 60.108
+cases_compared: 2005000
+divergences: 0

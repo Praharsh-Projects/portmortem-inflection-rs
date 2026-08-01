@@ -1,0 +1,8 @@
+# Upstream repository: https://github.com/jpvanhal/inflection
+# Upstream commit: 88eefaacf7d0caaa701af7c8ab2d0ab3f17086f1
+# Paths and SHA-256 digests are relative to this reference directory.
+9e9f9b4b2e7543ad1486f1328bf9ec50e5a5e2bb9caceb59652496dd61e64133  UPSTREAM_LICENSE
+cd1dc3368b42f8dc5b35db896fc6d52b8bb5925267ac122e118becf21f15a54c  UPSTREAM_README.rst
+b6b089383f812e6986f917a3c689722c54b8a69f04ded2ac32b627cbcfdaf35e  inflection/__init__.py
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  inflection/py.typed
+82be5a5d07c6dd244a68b6f41a61a1603172e688cb38ff9807e3f47850f02548  test_inflection.py
