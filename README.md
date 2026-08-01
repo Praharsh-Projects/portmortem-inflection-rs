@@ -14,9 +14,12 @@ comparison tools that run the original and the port side by side.
 
 ## Evidence status
 
-Local evidence has been generated and reviewed from this checkout. It is not
-yet public-CI or submission evidence because the repository has not been
-published and the signed-in Devfolio state is still unverified.
+Local evidence has been generated and reviewed, the repository is public, and
+GitHub Actions reruns the complete correctness gate on `main`. The signed-in
+Devfolio project is saved as a verified draft with its repository, branding,
+cover image, builder, narrative, technology, and platform fields. It is not a
+hackathon submission until the required demo is hosted and the owner publishes
+the project.
 
 Retained evidence:
 
@@ -31,6 +34,19 @@ Do not convert a successful command into a numerical claim without retaining
 the exact output, source revision, toolchain, machine details, and methodology.
 The full local record, raw metrics, hashes, and remaining gates are in
 [`docs/VERIFICATION.md`](docs/VERIFICATION.md).
+
+## Demo video
+
+A reproducible macOS renderer captures the build, examples, native tests, and
+untouched upstream parity run from a clean checkout, then creates a narrated
+sub-four-minute MP4 with a revision-and-checksum manifest:
+
+```sh
+./scripts/render_demo_video.sh
+```
+
+See [`docs/DEMO_VIDEO.md`](docs/DEMO_VIDEO.md) for outputs, review checks, and
+the separate human-controlled hosting and submission gates.
 
 ## Build and run
 

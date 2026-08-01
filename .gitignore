@@ -21,3 +21,6 @@ venv/
 # evidence trackable. Ignore only transient partial writes.
 *.tmp
 *.partial
+
+# Locally rendered demo video and its captured final-checkout logs.
+/dist/

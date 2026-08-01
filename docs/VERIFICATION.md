@@ -79,8 +79,10 @@ oracle, generator, and harness input hash.
 
 ## Remaining non-software gates
 
-- Confirm registration, team state, and the submission form in the signed-in
-  Devfolio dashboard.
-- Publish the final GitHub repository and rerun CI at the submitted SHA.
-- Record and upload the five-minute demo from the final checkout.
-- Review all claims, accept the rules, and complete the final submission.
+- Render and fully review the demo candidate from the final clean checkout.
+- Upload it to a judge-accessible YouTube, Vimeo, or Loom URL and add that link
+  to the verified Devfolio draft.
+- Recheck the final GitHub revision and its public CI run immediately before
+  submission.
+- Owner-review the event and platform terms, then publish the Devfolio project;
+  publishing is the final hackathon-submission action.

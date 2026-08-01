@@ -1,10 +1,11 @@
 # Demo script — maximum 5 minutes
 
-Status: **draft; local evidence exists, final video is not recorded.** Do not
-record the final video until `make verify` and `make bench` have completed from
-the final submission checkout and their outputs have been reviewed. Replace no
-bracketed cue with a claim that is not visible in the current terminal or
-evidence file.
+Status: **recording plan; no hosted demo URL is committed.** A local candidate
+may be rendered with `scripts/render_demo_video.sh`, but it must be reviewed and
+hosted by the owner before submission. Do not record or render from a checkout
+until `make verify` and `make bench` have completed there and their outputs have
+been reviewed. Replace no bracketed cue with a claim that is not visible in the
+current terminal or evidence file.
 
 ## Preflight (before recording)
 
