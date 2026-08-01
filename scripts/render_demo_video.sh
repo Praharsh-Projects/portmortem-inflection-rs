@@ -122,17 +122,20 @@ EOF
 
 {
   echo '$ make test'
-  grep -E '^(running [0-9]+ tests|test result:)' "${evidence_dir}/test.log" | tail -n 12
+  grep '^test result:' "${evidence_dir}/test.log"
   echo
   echo '$ make parity'
-  grep -E '^(\+ |[0-9]+ passed|running [0-9]+ tests|test result:|PASS:)' "${evidence_dir}/parity.log" | tail -n 18
+  echo "source oracle:                 $(grep '^455 passed' "${evidence_dir}/parity.log" | sed -n '1p')"
+  echo "untouched suite -> live Rust:  $(grep '^455 passed' "${evidence_dir}/parity.log" | sed -n '2p')"
+  echo "native upstream mappings:      $(grep '^test result:' "${evidence_dir}/parity.log" | tail -n 1)"
+  grep '^PASS:' "${evidence_dir}/parity.log" | tail -n 1
   echo
   echo "Captured from final checkout ${head_sha:0:12} at ${rendered_at}"
 } >"${work_dir}/text/05-body.txt"
 
 {
   echo '$ cat fuzz/log.txt'
-  cat "${evidence_dir}/fuzz.log"
+  grep -E '^(Port Mortem|status:|generated_at_utc:|python_ucd:|rustc:|binary_sha256:|seed:|duration_seconds:|cases_compared:|divergences:)' "${evidence_dir}/fuzz.log"
   echo
   echo 'Additional deterministic sweep:'
   echo '1,600,017 broad-Unicode and separator cases matched'
@@ -166,8 +169,12 @@ EOF
 cat >"${work_dir}/text/08-body.txt" <<EOF
 REPRODUCIBLE AND REVIEWABLE
 
-  Public source: ${repo_url}
-  Final revision: ${head_sha}
+  Public source:
+  github.com/Praharsh-Projects/portmortem-inflection-rs
+
+  Final revision:
+  ${head_sha}
+
   CI command: make verify
 
   30 native Rust tests
@@ -215,8 +222,14 @@ make_slide() {
   local number="$1"
   local kicker="$2"
   local title="$3"
+  local font_size="${4:-30}"
+  local line_spacing=10
   local body_path="${work_dir}/text/${number}-body.txt"
   local output_path="${slides_dir}/${number}.png"
+
+  if (( font_size <= 27 )); then
+    line_spacing=6
+  fi
 
   magick -size 1920x1080 gradient:'#07111f-#101b29' \
     -fill '#14263a' -draw 'roundrectangle 116,312 1804,960 34,34' \
@@ -224,7 +237,7 @@ make_slide() {
     -fill '#5ee0a0' -font "${font_sans}" -pointsize 31 -annotate +130+104 "${kicker}" \
     -fill '#f5f7fb' -font "${font_sans}" -pointsize 70 -annotate +130+225 "${title}" \
     -fill '#8ea4bc' -font "${font_sans}" -pointsize 26 -annotate +130+1018 "inflection-rs  /  ${head_sha:0:12}  /  captured ${rendered_at}" \
-    \( -background none -fill '#d9e5f2' -font "${font_mono}" -pointsize 30 -interline-spacing 10 -size 1570x570 caption:@"${body_path}" \) \
+    \( -background none -fill '#d9e5f2' -font "${font_mono}" -pointsize "${font_size}" -interline-spacing "${line_spacing}" -size 1570x580 caption:@"${body_path}" \) \
     -gravity northwest -geometry +176+356 -composite \
     "${output_path}"
 }
@@ -235,8 +248,8 @@ make_title_slide() {
     \( -size 1920x1080 xc:'#030812b8' \) -compose over -composite \
     \( "${logo_path}" -resize 170x170 \) -gravity northwest -geometry +130+150 -composite \
     -fill '#5ee0a0' -font "${font_sans}" -pointsize 32 -annotate +130+104 'PORT MORTEM 2026  /  TRACK D' \
-    -fill '#ffffff' -font "${font_sans}" -pointsize 94 -annotate +350+225 'inflection-rs' \
-    -fill '#d9e5f2' -font "${font_sans}" -pointsize 44 -annotate +350+290 'Verified Python-to-Rust behavioral port' \
+    -fill '#ffffff' -font "${font_sans}" -pointsize 94 -annotate +350+245 'inflection-rs' \
+    -fill '#d9e5f2' -font "${font_sans}" -pointsize 44 -annotate +350+350 'Verified Python-to-Rust behavioral port' \
     -fill '#d9e5f2' -font "${font_mono}" -pointsize 28 -interline-spacing 9 -annotate +132+470 "final checkout  ${head_sha}\npinned source   ${source_commit}\npublic repo     ${repo_url}" \
     -fill '#8ea4bc' -font "${font_sans}" -pointsize 26 -annotate +130+1018 "Generated from the final checkout at ${rendered_at}" \
     "${output_path}"
@@ -246,10 +259,10 @@ make_title_slide
 make_slide 02 'ARCHITECTURE' 'Standalone by construction'
 make_slide 03 'ONE-COMMAND BUILD' 'Actual final-checkout output'
 make_slide 04 'BEHAVIOR' 'Four requests, four structured responses'
-make_slide 05 'ORIGINAL TEST SUITE' 'Captured final-checkout pass'
-make_slide 06 'DIFFERENTIAL EVIDENCE' 'Broad inputs, zero retained divergences'
-make_slide 07 'PERFORMANCE' 'Correctness-gated benchmark evidence'
-make_slide 08 'HANDOFF' 'Everything needed for independent review'
+make_slide 05 'ORIGINAL TEST SUITE' 'Captured final-checkout pass' 27
+make_slide 06 'DIFFERENTIAL EVIDENCE' 'Broad inputs, zero retained divergences' 27
+make_slide 07 'PERFORMANCE' 'Correctness-gated benchmark evidence' 28
+make_slide 08 'HANDOFF' 'Everything needed for independent review' 27
 
 concat_path="${work_dir}/concat.txt"
 : >"${concat_path}"
